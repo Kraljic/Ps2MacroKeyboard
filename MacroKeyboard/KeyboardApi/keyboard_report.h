@@ -5,7 +5,6 @@
 
 #define KEYBOARD_REPORT_ID_ERROR 0
 #define KEYBOARD_REPORT_ID 1
-// TODO: revert to 5
 #define KEYBOARD_REPORT_KEY_NUM 5
 
 namespace keyboard_api
