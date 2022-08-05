@@ -1,4 +1,0 @@
-../MacroKeyboard/Memory/Src/memory_reader.cpp:5:13:uint8_t memory_access::getNextByte(void**)	24	static
-../MacroKeyboard/Memory/Src/memory_reader.cpp:12:14:uint16_t memory_access::getNextShort(void**)	24	static
-../MacroKeyboard/Memory/Src/memory_reader.cpp:19:14:uint32_t memory_access::getNextInt(void**)	24	static
-../MacroKeyboard/Memory/Src/memory_reader.cpp:26:11:void* memory_access::getNextAddress(const void*, size_t)	16	static

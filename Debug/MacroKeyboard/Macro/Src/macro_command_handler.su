@@ -1,9 +1,0 @@
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:15:5:macro_api::MacroCommandHandler::MacroCommandHandler(hid_keyboard::HidKeyboardState*)	16	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:20:11:void* macro_api::MacroCommandHandler::handleCommand(void*)	24	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:75:10:void macro_api::MacroCommandHandler::keyDown(void**, uint8_t)	32	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:92:10:void macro_api::MacroCommandHandler::keyUp(void**, uint8_t)	32	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:109:10:void macro_api::MacroCommandHandler::keyPress(void**, uint8_t)	32	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:120:10:void macro_api::MacroCommandHandler::delayShort(void**, uint8_t)	32	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:126:10:void macro_api::MacroCommandHandler::delayLong(void**, uint8_t)	32	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:132:10:void macro_api::MacroCommandHandler::delayLongLong(void**, uint8_t)	32	static
-../MacroKeyboard/Macro/Src/macro_command_handler.cpp:138:10:void macro_api::MacroCommandHandler::keyStream(void**, uint8_t)	40	static

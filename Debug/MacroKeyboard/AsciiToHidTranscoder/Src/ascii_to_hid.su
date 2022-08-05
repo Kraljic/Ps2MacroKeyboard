@@ -1,1 +1,0 @@
-../MacroKeyboard/AsciiToHidTranscoder/Src/ascii_to_hid.cpp:5:14:static uint16_t transcoders::AsciiToHidTranscoder::asciiToHid(char)	24	static

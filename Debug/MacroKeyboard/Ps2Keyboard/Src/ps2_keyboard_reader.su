@@ -1,6 +1,0 @@
-../MacroKeyboard/Ps2Keyboard/Src/ps2_keyboard_reader.cpp:9:10:void ps2_keyboard::_incrementBufferPointer(uint8_t*)	16	static
-../MacroKeyboard/Ps2Keyboard/Src/ps2_keyboard_reader.cpp:16:10:static void ps2_keyboard::Ps2KeyboardReader::receivePs2Date(uint8_t)	16	static
-../MacroKeyboard/Ps2Keyboard/Src/ps2_keyboard_reader.cpp:23:10:static bool ps2_keyboard::Ps2KeyboardReader::keyAvailable()	4	static
-../MacroKeyboard/Ps2Keyboard/Src/ps2_keyboard_reader.cpp:28:12:static ps2_keyboard::Ps2Key ps2_keyboard::Ps2KeyboardReader::getNextKey()	24	static
-../MacroKeyboard/Ps2Keyboard/Src/ps2_keyboard_reader.cpp:42:13:static uint8_t ps2_keyboard::Ps2KeyboardReader::_readNextByte()	16	static,ignoring_inline_asm
-../MacroKeyboard/Ps2Keyboard/Src/ps2_keyboard_reader.cpp:55:10:static void ps2_keyboard::Ps2KeyboardReader::_decodeByte(uint8_t, ps2_keyboard::Ps2Key*)	16	static

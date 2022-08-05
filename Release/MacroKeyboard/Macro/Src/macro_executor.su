@@ -1,2 +1,0 @@
-../MacroKeyboard/Macro/Src/macro_executor.cpp:8:5:macro_api::MacroExecutor::MacroExecutor(const void*, macro_api::MacroCommandHandler*)	16	static
-../MacroKeyboard/Macro/Src/macro_executor.cpp:21:13:uint8_t macro_api::MacroExecutor::execute(uint32_t)	16	static,ignoring_inline_asm

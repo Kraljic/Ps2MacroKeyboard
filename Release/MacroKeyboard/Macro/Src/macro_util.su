@@ -1,3 +1,0 @@
-../MacroKeyboard/Macro/Src/macro_util.cpp:11:9:static int macro_api::MacroUtil::compDesc(const void*, const void*)	0	static
-../MacroKeyboard/Macro/Src/macro_util.cpp:9:5:macro_api::MacroUtil::MacroUtil()	0	static
-../MacroKeyboard/Macro/Src/macro_util.cpp:18:14:static uint32_t macro_api::MacroUtil::getMacroTriggerCode(keyboard_api::KeyboardReport)	24	static
