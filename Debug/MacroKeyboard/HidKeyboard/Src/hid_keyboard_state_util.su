@@ -1,0 +1,3 @@
+../MacroKeyboard/HidKeyboard/Src/hid_keyboard_state_util.cpp:8:10:void hid_keyboard::dumpHidKeyboardState(hid_keyboard::HidKeyboardState*, char*)	24	static
+../MacroKeyboard/HidKeyboard/Src/hid_keyboard_state_util.cpp:14:10:void hid_keyboard::dumpHidKeyboardReport(keyboard_api::KeyboardReport*, char*)	32	static
+../MacroKeyboard/HidKeyboard/Src/hid_keyboard_state_util.cpp:33:10:void hid_keyboard::copyKeyboardReport(keyboard_api::KeyboardReport*, const keyboard_api::KeyboardReport*)	16	static

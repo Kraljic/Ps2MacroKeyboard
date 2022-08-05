@@ -1,0 +1,8 @@
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:6:5:memory_access::RelativeMemoryAccess::RelativeMemoryAccess(const void*, size_t)	0	static
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:12:11:void* memory_access::RelativeMemoryAccess::getAddress(uint32_t)	0	static
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:20:13:uint8_t memory_access::RelativeMemoryAccess::getUInt8(uint32_t)	16	static
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:28:12:int8_t memory_access::RelativeMemoryAccess::getInt8(uint32_t)	16	static
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:37:14:uint16_t memory_access::RelativeMemoryAccess::getUInt16(uint32_t)	16	static
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:45:13:int16_t memory_access::RelativeMemoryAccess::getInt16(uint32_t)	16	static
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:54:14:uint32_t memory_access::RelativeMemoryAccess::getUInt32(uint32_t)	16	static
+../MacroKeyboard/Memory/Src/relative_memory_access.cpp:62:13:int32_t memory_access::RelativeMemoryAccess::getInt32(uint32_t)	16	static

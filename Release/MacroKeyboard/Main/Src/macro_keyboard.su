@@ -1,0 +1,3 @@
+../MacroKeyboard/Main/Src/macro_keyboard.cpp:23:5:macro_keyboard::MacroKeyboard::MacroKeyboard()	0	static
+../MacroKeyboard/Main/Src/macro_keyboard.cpp:25:10:static void macro_keyboard::MacroKeyboard::init(macro_keyboard::MacroKeyboardConfig*)	24	static
+../MacroKeyboard/Main/Src/macro_keyboard.cpp:46:10:static void macro_keyboard::MacroKeyboard::run()	40	static

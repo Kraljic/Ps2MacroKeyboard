@@ -1,0 +1,2 @@
+../Flash/Src/flash_access.cpp:4:6:void Flash_WriteData(uint32_t, uint8_t*, uint16_t)	80	static
+../Flash/Src/flash_access.cpp:37:9:uint8_t Flash_ReadData(uint32_t, uint8_t*, uint16_t)	48	static

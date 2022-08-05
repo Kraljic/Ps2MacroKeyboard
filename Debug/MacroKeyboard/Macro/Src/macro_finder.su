@@ -1,0 +1,2 @@
+../MacroKeyboard/Macro/Src/macro_finder.cpp:7:18:macro_api::MacroHeader* macro_api::search(void*, uint16_t, macro_api::MacroHeader*)	40	static
+../MacroKeyboard/Macro/Src/macro_finder.cpp:39:18:macro_api::MacroHeader* macro_api::getMiddle(macro_api::MacroHeader*, macro_api::MacroHeader*)	24	static
