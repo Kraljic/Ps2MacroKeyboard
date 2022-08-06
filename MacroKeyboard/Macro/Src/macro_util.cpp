@@ -1,4 +1,5 @@
 #include "../Inc/macro_util.h"
+#include "../../HidKeyboard/Inc/hid_key_codes.h"
 
 #include <stdlib.h>
 
@@ -15,10 +16,14 @@ namespace macro_api
         return -(a - b);
     }
 
-    uint32_t MacroUtil::getMacroTriggerCode(KeyboardReport keyboardReport)
+    uint32_t MacroUtil::getMacroTriggerCode(KeyboardReport keyboardReport, uint8_t activeProfile)
     {
         uint32_t triggerCode;
         uint8_t *hash = (uint8_t *)&triggerCode;
+
+        if (activeProfile != HID_PROFILE_DEFAULT) {
+            keyboardReport.keys[4] = activeProfile;
+        }
 
         qsort(keyboardReport.keys, KEYBOARD_REPORT_KEY_NUM, sizeof(uint8_t), MacroUtil::compDesc);
 

@@ -12,6 +12,7 @@
 #include "../../MacroKeyboard/Main/Inc/macro_keyboard_config.h"
 #include "../../MacroKeyboard/HidKeyboard/Inc/hid_keyboard_state_util.h"
 #include "../../Flash/Inc/flash_address.h"
+#include "../../HidKeyboard/Inc/hid_key_codes.h"
 
 using namespace macro_keyboard;
 
@@ -40,15 +41,17 @@ void send_report_to_usb(keyboard_api::KeyboardReport *kr) {
 }
 
 void setup() {
+    static MacroKeyboardConfig config = { 0 };
+
 	// Setup ps2 receiver
 	HAL_UART_Receive_DMA(&huart1, &ps2ScanCodeBuffer, 1);
 
 	// Create macro keyboard config
-	MacroKeyboardConfig config = { 0 };
 	config.delayMethod = &HAL_Delay;
 	config.sendReportMethod = &send_report_to_usb;
 	config.macroDataAddress = MACRO_DATA_ADR;
 	config.reportId = REPORT_ID;
+    config.activeProfile = HID_PROFILE_DEFAULT;
 
 	// Initialize macro keyboard
 	MacroKeyboard::init(&config);

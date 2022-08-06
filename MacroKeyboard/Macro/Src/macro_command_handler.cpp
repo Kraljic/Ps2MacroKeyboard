@@ -1,9 +1,9 @@
 #include "../Inc/macro_command_handler.h"
 
-#include "../../HidKeyboard/Inc/hid_keyboard_state.h"
 #include "../../Memory/Inc/memory_reader.h"
 #include "../../Timer/Inc/delay_util.h"
 #include "../../AsciiToHidTranscoder/Inc/ascii_to_hid.h"
+#include "../Inc/macro_keyboard.h"
 
 using namespace memory_access;
 using namespace transcoders;
@@ -35,6 +35,9 @@ namespace macro_api
             case CMD_KEY_STREAM:
                 keyStream(&data, cmd);
                 break;
+            case CMD_SELECT_PROFILE:
+                selectProfile(&data, cmd);
+                break;
             default:
                 return 0;
             }
@@ -42,7 +45,7 @@ namespace macro_api
         else
         {
             // Handle normal command
-            uint8_t shortCmd = cmd >> (8 - CMD_COMMAND_NUMBER_OF_BITS);
+            uint8_t shortCmd = (cmd & CMD_MASK) >> CMD_COMMAND_OFFSET_BITS;
 
             switch (shortCmd)
             {
@@ -174,6 +177,12 @@ namespace macro_api
 
             Delay::delayShort(ticks);
         }
+    }
+
+    void MacroCommandHandler::selectProfile(void **data, uint8_t cmd) {
+        uint8_t profile = getNextByte(data);
+
+        macro_keyboard::MacroKeyboard::setActiveProfile(profile);
     }
 
 }

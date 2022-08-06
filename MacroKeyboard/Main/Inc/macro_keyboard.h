@@ -20,11 +20,15 @@ namespace macro_keyboard
 
         MacroKeyboard();
 
+
+        static uint8_t _executeMacro(uint8_t profile);
     public:
         static void (*receivePs2Data)(uint8_t);
 
         static void init(MacroKeyboardConfig *macroKeyboardConfig);
         static void run();
+
+        static void setActiveProfile(uint8_t profile);
     };
 }
 

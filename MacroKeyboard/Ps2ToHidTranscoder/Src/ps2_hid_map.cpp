@@ -31,11 +31,22 @@ namespace ps2_to_hid_transcoder
         if (initDone)
             return;
 
+        /// PS2 PROFILE CODES init
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_PROFILE_0)] = HID_PROFILE_0;
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_PROFILE_1)] = HID_PROFILE_1;
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_PROFILE_2)] = HID_PROFILE_2;
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_PROFILE_3)] = HID_PROFILE_3;
+
         /// PS2 KEY CODES init
         ps2ToHidLookupMap[PS2_KEY_MOD_LCTRL] = HID_KEY_LEFTCTRL;
         ps2ToHidLookupMap[PS2_KEY_MOD_LSHIFT] = HID_KEY_LEFTSHIFT;
         ps2ToHidLookupMap[PS2_KEY_MOD_LALT] = HID_KEY_LEFTALT;
         ps2ToHidLookupMap[PS2_KEY_MOD_RSHIFT] = HID_KEY_RIGHTSHIFT;
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_RCTRL)] = HID_KEY_RIGHTCTRL;
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_RALT)] = HID_KEY_RIGHTALT;
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_LMETA)] = HID_KEY_LEFTMETA;
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_RMETA)] = HID_KEY_RIGHTMETA;
+
 
         ps2ToHidLookupMap[PS2_KEY_A] = HID_KEY_A;
         ps2ToHidLookupMap[PS2_KEY_B] = HID_KEY_B;
@@ -123,16 +134,14 @@ namespace ps2_to_hid_transcoder
         ps2ToHidLookupMap[PS2_KEY_KP9] = HID_KEY_KP9;
         ps2ToHidLookupMap[PS2_KEY_KP0] = HID_KEY_KP0;
 
-        /// Extended PS2 KEY CODES init
-        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_LMETA)] = HID_KEY_LEFTMETA;
-        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_RCTRL)] = HID_KEY_RIGHTCTRL;
-        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_RALT)] = HID_KEY_RIGHTALT;
-        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MOD_RMETA)] = HID_KEY_RIGHTMETA;
-
-        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_SYSRQ)] = HID_KEY_SYSRQ;
+        /* PS2_KEY_SCROLLLOCK is exception. */
+        ps2ToHidLookupMap[PS2_KEY_SCROLLLOCK] = HID_KEY_SCROLLLOCK;
         ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_SCROLLLOCK)] = HID_KEY_SCROLLLOCK;
 
-        ps2ToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MENU)] = HID_KEY_PROPS;
+        /// Extended PS2 KEY CODES init
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_SYSRQ)] = HID_KEY_SYSRQ;
+
+        ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_MENU)] = HID_KEY_PROPS;
 
         ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_INSERT)] = HID_KEY_INSERT;
         ps2ExtToHidLookupMap[PS2_EXT_CODE(PS2_KEY_HOME)] = HID_KEY_HOME;

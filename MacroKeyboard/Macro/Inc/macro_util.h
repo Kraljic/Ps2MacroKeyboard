@@ -15,7 +15,7 @@ namespace macro_api
 
     public:
         /** Get macro trigger code from keyboardReport. */
-        static uint32_t getMacroTriggerCode(keyboard_api::KeyboardReport keyboardReport);
+        static uint32_t getMacroTriggerCode(keyboard_api::KeyboardReport keyboardReport, uint8_t activeProfile);
     };
 
 }

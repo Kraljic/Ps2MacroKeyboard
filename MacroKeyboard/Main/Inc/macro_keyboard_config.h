@@ -15,6 +15,7 @@ namespace macro_keyboard
         void (*delayMethod)(uint32_t);
         void (*sendReportMethod)(keyboard_api::KeyboardReport *);
 
+        uint8_t activeProfile;
     } MacroKeyboardConfig;
 }
 

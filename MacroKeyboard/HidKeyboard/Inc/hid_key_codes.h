@@ -26,6 +26,15 @@
 #define HID_KEY_MOD_RMETA 0x80
 
 /**
+ * Profile keys are virtual keys that can simulate profiles
+ */
+#define HID_PROFILE_DEFAULT 0x00
+#define HID_PROFILE_0 0x90
+#define HID_PROFILE_1 0x91
+#define HID_PROFILE_2 0x92
+#define HID_PROFILE_3 0x93
+
+/**
  * Scan codes - last N slots in the HID report (usually 6).
  * 0x00 if no key pressed.
  *
@@ -185,11 +194,11 @@
 // 0x8d  Keyboard International7
 // 0x8e  Keyboard International8
 // 0x8f  Keyboard International9
-#define HID_KEY_HANGEUL 0x90        // Keyboard LANG1
-#define HID_KEY_HANJA 0x91          // Keyboard LANG2
-#define HID_KEY_KATAKANA 0x92       // Keyboard LANG3
-#define HID_KEY_HIRAGANA 0x93       // Keyboard LANG4
-#define HID_KEY_ZENKAKUHANKAKU 0x94 // Keyboard LANG5
+//#define HID_KEY_HANGEUL 0x90        // Keyboard LANG1
+//#define HID_KEY_HANJA 0x91          // Keyboard LANG2
+//#define HID_KEY_KATAKANA 0x92       // Keyboard LANG3
+//#define HID_KEY_HIRAGANA 0x93       // Keyboard LANG4
+//#define HID_KEY_ZENKAKUHANKAKU 0x94 // Keyboard LANG5
 // 0x95  Keyboard LANG6
 // 0x96  Keyboard LANG7
 // 0x97  Keyboard LANG8

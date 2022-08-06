@@ -56,14 +56,14 @@ namespace ps2_keyboard
     {
         switch (byte)
         {
-        case PS2_KEY_EXTENDED:
-            key->ps2Extended = PS2_KEY_EXTENDED;
+        case PS2_FLAG_EXTENDED:
+            key->ps2Extended = PS2_FLAG_EXTENDED;
             break;
-        case PS2_KEY_REALESED:
-            key->released = PS2_KEY_REALESED;
+        case PS2_FLAG_REALESED:
+            key->released = PS2_FLAG_REALESED;
             break;
-        case PS2_KEY_SPECIAL:
-            key->ps2Special = PS2_KEY_SPECIAL;
+        case PS2_FLAG_SPECIAL:
+            key->ps2Special = PS2_FLAG_SPECIAL;
             break;
         default:
             key->ps2Code = byte;

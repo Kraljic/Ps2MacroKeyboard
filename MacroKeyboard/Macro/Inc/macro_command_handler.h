@@ -22,6 +22,7 @@ namespace macro_api
         void delayLongLong(void **data, uint8_t cmd);
 
         void keyStream(void **data, uint8_t cmd);
+        void selectProfile(void **data, uint8_t cmd);
 
     public:
         /** Requeres reference of output keyboard to which commands are being sent to. */

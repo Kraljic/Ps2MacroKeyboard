@@ -13,8 +13,8 @@ namespace ps2_to_hid_transcoder
     class Ps2HidMap
     {
     private:
-        static const uint8_t PS2_HID_MAP_SIZE = (0x83 + 100);     // 0x83 - highest
-        static const uint8_t PS2_EXT_HID_MAP_SIZE = (0x7D + 100); // 0x7D - highest
+        static const uint8_t PS2_HID_MAP_SIZE = (0x83 + 1);     // 0x83 - highest
+        static const uint8_t PS2_EXT_HID_MAP_SIZE = (0x7D + 1); // 0x7D - highest
 
         static uint8_t ps2ToHidLookupMap[PS2_HID_MAP_SIZE];
         static uint8_t ps2ExtToHidLookupMap[PS2_EXT_HID_MAP_SIZE];
