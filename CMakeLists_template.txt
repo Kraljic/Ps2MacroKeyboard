@@ -48,11 +48,27 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(${includes})
+include_directories(
+    ${includes}
+    MacroKeyboard/AsciiToHidTranscoder/Inc
+    MacroKeyboard/HidKeyboard/Inc
+    MacroKeyboard/KeyboardApi/Inc
+    MacroKeyboard/Macro/Inc
+    MacroKeyboard/Main/Inc
+    MacroKeyboard/Memory/Inc
+    MacroKeyboard/Ps2Keyboard/Inc
+    MacroKeyboard/Ps2ToHidTranscoder/Inc
+    MacroKeyboard/Timer/Inc
+)
 
-add_definitions(${defines})
 
-file(GLOB_RECURSE SOURCES ${sources})
+add_definitions(
+    ${defines}
+)
+
+file(GLOB_RECURSE SOURCES
+    ${sources}
+)
 
 set(LINKER_SCRIPT $${CMAKE_SOURCE_DIR}/STM32F103C8TX_FLASH.ld)
 

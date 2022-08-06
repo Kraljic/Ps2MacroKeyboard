@@ -49,11 +49,27 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(Core/Inc Drivers/STM32F1xx_HAL_Driver/Inc Drivers/STM32F1xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F1xx/Include Drivers/CMSIS/Include USB_DEVICE/App USB_DEVICE/Target Middlewares/ST/STM32_USB_Device_Library/Core/Inc Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc)
+include_directories(
+    Core/Inc Drivers/STM32F1xx_HAL_Driver/Inc Drivers/STM32F1xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F1xx/Include Drivers/CMSIS/Include USB_DEVICE/App USB_DEVICE/Target Middlewares/ST/STM32_USB_Device_Library/Core/Inc Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc
+    MacroKeyboard/AsciiToHidTranscoder/Inc
+    MacroKeyboard/HidKeyboard/Inc
+    MacroKeyboard/KeyboardApi/Inc
+    MacroKeyboard/Macro/Inc
+    MacroKeyboard/Main/Inc
+    MacroKeyboard/Memory/Inc
+    MacroKeyboard/Ps2Keyboard/Inc
+    MacroKeyboard/Ps2ToHidTranscoder/Inc
+    MacroKeyboard/Timer/Inc
+)
 
-add_definitions(-DUSE_HAL_DRIVER -DSTM32F103xB -DDEBUG)
 
-file(GLOB_RECURSE SOURCES "Flash/*.*" "Core/*.*" "MacroKeyboard/*.*" "Middlewares/*.*" "Drivers/*.*" "USB_DEVICE/*.*")
+add_definitions(
+    -DUSE_HAL_DRIVER -DSTM32F103xB -DDEBUG
+)
+
+file(GLOB_RECURSE SOURCES
+    "Flash/*.*" "Core/*.*" "MacroKeyboard/*.*" "Middlewares/*.*" "Drivers/*.*" "USB_DEVICE/*.*"
+)
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103C8TX_FLASH.ld)
 
