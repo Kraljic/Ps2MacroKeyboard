@@ -28,7 +28,7 @@ namespace macro_api
                 current = getMiddle(start = current + 1, end);
             else
                 current = getMiddle(start, end = current - 1);
-        } while (start != end);
+        } while (start < end);
 
         if (current->macroTriggerCode == searchItem->macroTriggerCode)
             return current;
