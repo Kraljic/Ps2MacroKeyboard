@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "keyboard_driver.h"
+#include "usbd_hid.h"
+
 
 /* USER CODE END Includes */
 
@@ -48,6 +50,8 @@ DMA_HandleTypeDef hdma_usart1_rx;
 
 /* USER CODE BEGIN PV */
 
+extern USBD_HandleTypeDef hUsbDeviceFS;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,6 +68,7 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+uint8_t txBuffer[1 + USBD_HID_OUTREPORT_BUF_SIZE] = {0x06, 'A', 0x00, 'B', 0, 'C', 0, 'D'};
 /* USER CODE END 0 */
 
 /**
@@ -101,6 +106,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   setup();
 
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,6 +116,10 @@ int main(void)
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
 	loop();
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+
+      USBD_HID_SendReport(&hUsbDeviceFS, txBuffer, sizeof(txBuffer));
+      HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

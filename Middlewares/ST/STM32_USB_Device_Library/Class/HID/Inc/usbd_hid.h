@@ -42,11 +42,14 @@ extern "C" {
   * @{
   */
 #define HID_EPIN_ADDR                 0x81U
-#define HID_EPIN_SIZE                 0x08U
+#define HID_EPIN_SIZE                 0x40U
 
-#define USB_HID_CONFIG_DESC_SIZ       34U
+#define HID_EPOUT_ADDR                0x01U
+#define HID_EPOUT_SIZE                0x40U
+
+#define USB_HID_CONFIG_DESC_SIZ       41U
 #define USB_HID_DESC_SIZ              9U
-#define HID_MOUSE_REPORT_DESC_SIZE    187U
+#define HID_MOUSE_REPORT_DESC_SIZE    (187U + 34U)
 
 #define HID_DESCRIPTOR_TYPE           0x21U
 #define HID_REPORT_DESC               0x22U
@@ -67,6 +70,8 @@ extern "C" {
 
 #define HID_REQ_SET_REPORT            0x09U
 #define HID_REQ_GET_REPORT            0x01U
+
+#define USBD_HID_OUTREPORT_BUF_SIZE   32
 /**
   * @}
   */
@@ -85,9 +90,11 @@ HID_StateTypeDef;
 
 typedef struct
 {
+  uint8_t              Report_buf[USBD_HID_OUTREPORT_BUF_SIZE + 1];
   uint32_t             Protocol;
   uint32_t             IdleState;
   uint32_t             AltSetting;
+  uint8_t              IsReportAvailable;
   HID_StateTypeDef     state;
 }
 USBD_HID_HandleTypeDef;

@@ -83,6 +83,7 @@ EndBSPDependencies */
   */
 
 
+extern USBD_HandleTypeDef hUsbDeviceFS;
 
 
 /** @defgroup USBD_HID_Private_FunctionPrototypes
@@ -99,6 +100,8 @@ static uint8_t  USBD_HID_DeInit(USBD_HandleTypeDef *pdev,
 static uint8_t  USBD_HID_Setup(USBD_HandleTypeDef *pdev,
                                USBD_SetupReqTypedef *req);
 
+static uint8_t  USBD_HID_EP0_RxReady(USBD_HandleTypeDef *pdev);
+
 static uint8_t  *USBD_HID_GetFSCfgDesc(uint16_t *length);
 
 static uint8_t  *USBD_HID_GetHSCfgDesc(uint16_t *length);
@@ -108,6 +111,8 @@ static uint8_t  *USBD_HID_GetOtherSpeedCfgDesc(uint16_t *length);
 static uint8_t  *USBD_HID_GetDeviceQualifierDesc(uint16_t *length);
 
 static uint8_t  USBD_HID_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum);
+
+static uint8_t  USBD_HID_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum);
 /**
   * @}
   */
@@ -122,9 +127,9 @@ USBD_ClassTypeDef  USBD_HID =
   USBD_HID_DeInit,
   USBD_HID_Setup,
   NULL, /*EP0_TxSent*/
-  NULL, /*EP0_RxReady*/
+  USBD_HID_EP0_RxReady, /*EP0_RxReady*/
   USBD_HID_DataIn, /*DataIn*/
-  NULL, /*DataOut*/
+  USBD_HID_DataOut, /*DataOut*/
   NULL, /*SOF */
   NULL,
   NULL,
@@ -182,6 +187,15 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIG
   0x00,
   HID_FS_BINTERVAL,          /*bInterval: Polling Interval */
   /* 34 */
+
+  0x07,          /* bLength: Endpoint Descriptor size */
+  USB_DESC_TYPE_ENDPOINT, /* bDescriptorType: */
+  HID_EPOUT_ADDR,  /*bEndpointAddress: Endpoint Address (OUT)*/
+  0x03, /* bmAttributes: Interrupt endpoint */
+  HID_EPOUT_SIZE,  /* wMaxPacketSize: 2 Bytes max  */
+  0x00,
+  HID_FS_BINTERVAL,  /* bInterval: Polling Interval */
+  /* 41 */
 };
 
 /* USB HID device HS Configuration Descriptor */
@@ -367,6 +381,7 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
 	     0xC0    ,//bSize: 0x00, bType: Main, bTag: End Collection
 	     0x05    ,//bSize: 0x01, bType: Global, bTag: Usage Page
 	     0x0C    ,//Usage Page(Consumer )
+
 	     0x09    ,//bSize: 0x01, bType: Local, bTag: Usage
 	     0x01    ,//Usage(Consumer Control)
 	     0xA1    ,//bSize: 0x01, bType: Main, bTag: Collection
@@ -376,20 +391,21 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
 	     0x19    ,//bSize: 0x01, bType: Local, bTag: Usage Minimum
 	     0x00    ,//Usage Minimum(0x0 )
 	     0x2A    ,//bSize: 0x02, bType: Local, bTag: Usage Maximum
-	     0x3C,
-	     0x02 ,//Usage Maximum(0x23C )
+         0xFF,
+	     0x00 ,//Usage Maximum(0x23C )
 	     0x15    ,//bSize: 0x01, bType: Global, bTag: Logical Minimum
 	     0x00    ,//Logical Minimum(0x0 )
 	     0x26    ,//bSize: 0x02, bType: Global, bTag: Logical Maximum
-	     0x3C,
-	     0x02 ,//Logical Maximum(0x23C )
+	     0xFF,
+	     0x00 ,//Logical Maximum(0x23C )
 	     0x95    ,//bSize: 0x01, bType: Global, bTag: Report Count
-	     0x01    ,//Report Count(0x1 )
+	     63    ,//Report Count(0x1 )
 	     0x75    ,//bSize: 0x01, bType: Global, bTag: Report Size
-	     0x10    ,//Report Size(0x10 )
+	     0x08    ,//Report Size(0x10 )
 	     0x81    ,//bSize: 0x01, bType: Main, bTag: Input
 	     0x00    ,//Input(Data, Array, Absolute, No Wrap, Linear, Preferred State, No Null Position, Bit Field)
 	     0xC0    ,//bSize: 0x00, bType: Main, bTag: End Collection
+
 	     0x05    ,//bSize: 0x01, bType: Global, bTag: Usage Page
 	     0x01    ,//Usage Page(Generic Desktop Controls )
 	     0x09    ,//bSize: 0x01, bType: Local, bTag: Usage
@@ -417,6 +433,7 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
 	     0x81    ,//bSize: 0x01, bType: Main, bTag: Input
 	     0x01    ,//Input(Constant, Array, Absolute, No Wrap, Linear, Preferred State, No Null Position, Bit Field)
 	     0xC0    ,//bSize: 0x00, bType: Main, bTag: End Collection
+
 	     0x06    ,//bSize: 0x02, bType: Global, bTag: Usage Page
 	     0x01,
 	     0xFF ,//Usage Page(Undefined )
@@ -461,6 +478,7 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
 	     0xB1    ,//bSize: 0x01, bType: Main, bTag: Feature
 	     0x03    ,//Feature(Constant, Variable, Absolute, No Wrap, Linear, Preferred State, No Null Position, Non VolatileBit Field)
 	     0xC0    ,//bSize: 0x00, bType: Main, bTag: End Collection
+
 	     0x06    ,//bSize: 0x02, bType: Global, bTag: Usage Page
 	     0x01,
 	     0xFF ,//Usage Page(Undefined )
@@ -504,7 +522,77 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
 	     0x24    ,//Usage(36)
 	     0xB1    ,//bSize: 0x01, bType: Main, bTag: Feature
 	     0x03    ,//Feature(Constant, Variable, Absolute, No Wrap, Linear, Preferred State, No Null Position, Non VolatileBit Field)
-	     0xC0    //bSize: 0x00, bType: Main, bTag: End Collection
+	     0xC0,    //bSize: 0x00, bType: Main, bTag: End Collection
+
+ // NOTE: NOT WORKING START 1
+
+//         0x06, 0x00, 0xFF,    // Global  Usage page = 0xFF00 (Vendor-defined pages are in the range 0xFF00 through 0xFFFF)
+//         0x09, 0x01,          // Local   Usage (vendor usage 1)
+//         0xA1, 0x01,          // Main    Collection (application) begin
+//         0x85, 6,             // Global  Report ID (cannot be 0)
+//
+//         0x19, 0x01, // Usage Minimum
+//         0x29, 0x40, // Usage Maximum
+//         0x75, 0x08, // Report Size: 8-bit field size
+//         0x95, 32,// Report Count
+//         0x91, 0x02, // Output (Data, Array, Abs)
+//
+//        // 54 bytes | End (add one byte)
+//         0xC0,                 // Main    Collection (application) end
+
+// NOTE: NOT WORKING END 1
+
+// TODO: this is a working example!!
+         0x06, 0x00, 0xFF, // Usage Page = 0xFF00 (Vendor Defined Page 1)
+         0x09, 0x01, // Usage (Vendor Usage 1)
+         0xA1, 0x01, // Collection (Application)
+         0x85, 6,             // Global  Report ID (cannot be 0)
+        // Input report
+         0x19, 0x01, // Usage Minimum
+         0x29, 0x40, // Usage Maximum
+         0x15, 0x80,//0x00, // Logical Minimum (data bytes in the report may have minimum value = 0x00)
+        //0x26, 0xFF, 0x00, // Logical Maximum (data bytes in the report may have maximum value = 0x00FF = unsigned 255)
+         0x25,0x7f,
+         0x75, 0x08, // Report Size: 8-bit field size
+         0x95, 32,// Report Count
+         0x81, 0x02, // Input (Data, Array, Abs)
+        // Output report
+         0x19, 0x01, // Usage Minimum
+         0x29, 0x40, // Usage Maximum
+         0x75, 0x08, // Report Size: 8-bit field size
+         0x95, 32,// Report Count
+         0x91, 0x02, // Output (Data, Array, Abs)
+         0xC0,                 // Main    Collection (application) end
+
+// TODO: this is a working example!! END
+
+// NOTE: NOT WORKING START 2
+
+//        0x09    ,//bSize: 0x01, bType: Local, bTag: Usage
+//        0x01    ,//Usage(Consumer Control)
+//        0xA1    ,//bSize: 0x01, bType: Main, bTag: Collection
+//        0x01    ,//Collection(Application )
+//        0x85    ,//bSize: 0x01, bType: Global, bTag: Report ID
+//        0x06    ,//Report ID(0x2 )
+//        0x19    ,//bSize: 0x01, bType: Local, bTag: Usage Minimum
+//        0x00    ,//Usage Minimum(0x0 )
+//        0x2A    ,//bSize: 0x02, bType: Local, bTag: Usage Maximum
+//        0x3C,
+//        0x02 ,//Usage Maximum(0x23C )
+//        0x15    ,//bSize: 0x01, bType: Global, bTag: Logical Minimum
+//        0x00    ,//Logical Minimum(0x0 )
+//        0x26    ,//bSize: 0x02, bType: Global, bTag: Logical Maximum
+//        0x3C,
+//        0x02 ,//Logical Maximum(0x23C )
+//        0x95    ,//bSize: 0x01, bType: Global, bTag: Report Count
+//        0x20    ,//Report Count(0x20 ) // 32
+//        0x75    ,//bSize: 0x01, bType: Global, bTag: Report Size
+//        0x10    ,//Report Size(0x10 )
+//        0x81    ,//bSize: 0x01, bType: Main, bTag: Input
+//        0x00    ,//Input(Data, Array, Absolute, No Wrap, Linear, Preferred State, No Null Position, Bit Field)
+//        0xC0    ,//bSize: 0x00, bType: Main, bTag: End Collection
+
+// NOTE: NOT WORKING END 2
 };
 
 /**
@@ -524,9 +612,14 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
   */
 static uint8_t  USBD_HID_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 {
+    USBD_HID_HandleTypeDef     *hhid;
+
   /* Open EP IN */
   USBD_LL_OpenEP(pdev, HID_EPIN_ADDR, USBD_EP_TYPE_INTR, HID_EPIN_SIZE);
   pdev->ep_in[HID_EPIN_ADDR & 0xFU].is_used = 1U;
+
+  USBD_LL_OpenEP(pdev, HID_EPOUT_ADDR, USBD_EP_TYPE_INTR, HID_EPOUT_SIZE);
+  pdev->ep_out[HID_EPOUT_ADDR & 0xFU].is_used = 1U;
 
   pdev->pClassData = USBD_malloc(sizeof(USBD_HID_HandleTypeDef));
 
@@ -534,6 +627,12 @@ static uint8_t  USBD_HID_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
   {
     return USBD_FAIL;
   }
+
+    hhid = (USBD_HID_HandleTypeDef *) pdev->pClassData;
+//    ((USBD_HID_ItfTypeDef *)pdev->pUserData)->Init();
+
+    USBD_LL_PrepareReceive(pdev, HID_EPOUT_ADDR, hhid->Report_buf,
+                           USBD_HID_OUTREPORT_BUF_SIZE);
 
   ((USBD_HID_HandleTypeDef *)pdev->pClassData)->state = HID_IDLE;
 
@@ -599,6 +698,11 @@ static uint8_t  USBD_HID_Setup(USBD_HandleTypeDef *pdev,
 
         case HID_REQ_GET_IDLE:
           USBD_CtlSendData(pdev, (uint8_t *)(void *)&hhid->IdleState, 1U);
+          break;
+
+        case HID_REQ_SET_REPORT:
+          hhid->IsReportAvailable = 1U;
+          USBD_CtlPrepareRx(pdev, hhid->Report_buf, req->wLength);
           break;
 
         default:
@@ -793,7 +897,35 @@ static uint8_t  USBD_HID_DataIn(USBD_HandleTypeDef *pdev,
   return USBD_OK;
 }
 
+/**
+  * @brief  USBD_HID_DataOut
+  *         handle data OUT Stage
+  * @param  pdev: device instance
+  * @param  epnum: endpoint index
+  * @retval status
+  */
+uint8_t rxBuffer[64] = { 0 };
+static uint8_t  USBD_HID_DataOut(USBD_HandleTypeDef *pdev,
+                                        uint8_t epnum)
+{
+    USBD_HID_HandleTypeDef     *hhid = (USBD_HID_HandleTypeDef *)pdev->pClassData;
 
+    USBD_LL_PrepareReceive(pdev, HID_EPOUT_ADDR, hhid->Report_buf,
+                           USBD_HID_OUTREPORT_BUF_SIZE);
+    return USBD_OK;
+}
+
+static uint8_t USBD_HID_EP0_RxReady(USBD_HandleTypeDef *pdev)
+{
+    USBD_HID_HandleTypeDef     *hhid = (USBD_HID_HandleTypeDef *)pdev->pClassData;
+
+    if (hhid->IsReportAvailable == 1U)
+    {
+        hhid->IsReportAvailable = 0U;
+    }
+
+    return USBD_OK;
+}
 /**
 * @brief  DeviceQualifierDescriptor
 *         return Device Qualifier descriptor
