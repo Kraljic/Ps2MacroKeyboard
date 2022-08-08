@@ -118,8 +118,8 @@ int main(void)
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 
-      USBD_HID_SendReport(&hUsbDeviceFS, txBuffer, sizeof(txBuffer));
-      HAL_Delay(10);
+//      USBD_HID_SendReport(&hUsbDeviceFS, txBuffer, sizeof(txBuffer));
+//      HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
