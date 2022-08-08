@@ -22,6 +22,7 @@ namespace macro_api
         void delayLongLong(void **data, uint8_t cmd);
 
         void keyStream(void **data, uint8_t cmd);
+        void keyStreamV2(void **data, uint8_t cmd);
         void selectProfile(void **data, uint8_t cmd);
 
     public:

@@ -42,5 +42,6 @@
 // Extended commands
 #define CMD_KEY_STREAM (CMD_EXTENDED | 0x01)
 #define CMD_SELECT_PROFILE (CMD_EXTENDED | 0x02)
+#define CMD_KEY_STREAM_V2 (CMD_EXTENDED | 0x03)
 
 #endif
