@@ -7,6 +7,9 @@
 
 namespace transcoders
 {
+    /**
+     * Deprecated, use ascii_to_hid_v2.h instead
+     */
     class AsciiToHidTranscoder
     {
     private:

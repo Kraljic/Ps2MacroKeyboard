@@ -36,8 +36,10 @@ void send_report_to_usb(keyboard_api::KeyboardReport *kr) {
 
 	USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t*) &krStatic, 8);
 
-	hid_keyboard::dumpHidKeyboardReport(&krStatic, outBuffer);
-	HAL_UART_Transmit_IT(&huart2, (uint8_t *)outBuffer, strlen(outBuffer));
+    HAL_Delay(1);
+
+//	hid_keyboard::dumpHidKeyboardReport(&krStatic, outBuffer);
+//	HAL_UART_Transmit_IT(&huart2, (uint8_t *)outBuffer, strlen(outBuffer));
 }
 
 void setup() {

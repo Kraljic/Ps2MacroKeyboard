@@ -13,7 +13,7 @@ namespace delay_util
 
     public:
         /** Duration of short delay tick in milliseconds. */
-        static const uint32_t DELAY_SHORT_TICK_DURATION = 10;
+        static const uint32_t DELAY_SHORT_TICK_DURATION = 1;
 
         /** Duration of long delay tick in milliseconds. */
         static const uint32_t DELAY_LONG_TICK_DURATION = 100;

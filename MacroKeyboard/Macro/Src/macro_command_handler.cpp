@@ -1,9 +1,10 @@
 #include "../Inc/macro_command_handler.h"
 
+#include "../Inc/macro_keyboard.h"
 #include "../../Memory/Inc/memory_reader.h"
 #include "../../Timer/Inc/delay_util.h"
 #include "../../AsciiToHidTranscoder/Inc/ascii_to_hid.h"
-#include "../Inc/macro_keyboard.h"
+#include "../../AsciiToHidTranscoder/Inc/ascii_to_hid_v2.h"
 
 using namespace memory_access;
 using namespace transcoders;
@@ -34,6 +35,9 @@ namespace macro_api
             {
             case CMD_KEY_STREAM:
                 keyStream(&data, cmd);
+                break;
+            case CMD_KEY_STREAM_V2:
+                keyStreamV2(&data, cmd);
                 break;
             case CMD_SELECT_PROFILE:
                 selectProfile(&data, cmd);
@@ -174,6 +178,51 @@ namespace macro_api
                 this->keyboardState->keyUp(mod, 1);
             this->keyboardState->keyUp(key, 0);
             this->keyboardState->sendReport();
+
+            Delay::delayShort(ticks);
+        }
+    }
+
+    void MacroCommandHandler::keyStreamV2(void **data, uint8_t cmd) {
+
+        uint8_t ticks = getNextByte(data);
+        uint16_t size = getNextShort(data);
+
+        char c;
+        uint8_t* numpadKeys;
+        uint8_t *key;
+
+        // For each key -> press, sleep, release, sleep
+        for (int i = 0; i < size; i++)
+        {
+            c = getNextByte(data);
+
+            numpadKeys = AsciiToHidTranscoderV2::asciiToHid(c);
+
+            if (numpadKeys[0] == 0 || numpadKeys[0] == HID_KEY_MOD_LSHIFT) {
+                if (numpadKeys[0])
+                    this->keyboardState->keyDown(numpadKeys[0], 1);
+                this->keyboardState->keyDown(numpadKeys[1], 0);
+                this->keyboardState->sendReport();
+
+                if (numpadKeys[0])
+                    this->keyboardState->keyUp(numpadKeys[0], 1);
+                this->keyboardState->keyUp(numpadKeys[1], 0);
+                this->keyboardState->sendReport();
+            } else {
+                this->keyboardState->keyDown(numpadKeys[0], 1);
+
+                for (key = numpadKeys + 1; *key != 0 && key < key + 3; key++) {
+                    this->keyboardState->keyDown(*key, 0);
+                    this->keyboardState->sendReport();
+
+                    this->keyboardState->keyUp(*key, 0);
+                    this->keyboardState->sendReport();
+                }
+
+                this->keyboardState->keyUp(numpadKeys[0], 1);
+                this->keyboardState->sendReport();
+            }
 
             Delay::delayShort(ticks);
         }
