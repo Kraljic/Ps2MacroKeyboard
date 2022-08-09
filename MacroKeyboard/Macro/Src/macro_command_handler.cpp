@@ -89,6 +89,7 @@ namespace macro_api
             uint8_t hidKey = getNextByte((void **)data);
 
             this->keyboardState->keyDown(hidKey, includesModKey);
+            this->keyboardState->sendReport();
 
             includesModKey = 0; // Only first key can be mod key
         }
@@ -106,11 +107,10 @@ namespace macro_api
             uint8_t hidKey = getNextByte(data);
 
             this->keyboardState->keyUp(hidKey, includesModKey);
+            this->keyboardState->sendReport();
 
             includesModKey = 0; // Only first key can be mod key
         }
-
-        this->keyboardState->sendReport();
     }
 
     void MacroCommandHandler::keyPress(void **data, uint8_t cmd)
@@ -119,9 +119,7 @@ namespace macro_api
         void *dataTmp = *data;
 
         this->keyDown(&dataTmp, cmd);
-        Delay::delayShort(1);
         this->keyUp(data, cmd);
-        Delay::delayShort(1);
     }
 
     void MacroCommandHandler::delayShort(void **data, uint8_t cmd)
@@ -166,16 +164,20 @@ namespace macro_api
             key = hidKeys & 0xFF;
 
             // Press mod key (if present) then actual key and send report
-            if (mod)
+            if (mod) {
                 this->keyboardState->keyDown(mod, 1);
+                this->keyboardState->sendReport();
+            }
             this->keyboardState->keyDown(key, 0);
             this->keyboardState->sendReport();
 
             Delay::delayShort(ticks);
 
             // Release mod key (if present) then actual key and send report
-            if (mod)
+            if (mod) {
                 this->keyboardState->keyUp(mod, 1);
+                this->keyboardState->sendReport();
+            }
             this->keyboardState->keyUp(key, 0);
             this->keyboardState->sendReport();
 
@@ -189,7 +191,7 @@ namespace macro_api
         uint16_t size = getNextShort(data);
 
         char c;
-        uint8_t* numpadKeys;
+        uint8_t *numpadKeys;
         uint8_t *key;
 
         // For each key -> press, sleep, release, sleep
@@ -199,32 +201,49 @@ namespace macro_api
 
             numpadKeys = AsciiToHidTranscoderV2::asciiToHid(c);
 
-            if (numpadKeys[0] == 0 || numpadKeys[0] == HID_KEY_MOD_LSHIFT) {
-                if (numpadKeys[0])
+            if (numpadKeys[0] == HID_KEY_NONE
+                || numpadKeys[0] == HID_KEY_MOD_LSHIFT) {
+                // Handle alphabet letters and common keys
+                if (numpadKeys[0]) {
                     this->keyboardState->keyDown(numpadKeys[0], 1);
+                    this->keyboardState->sendReport();
+                    Delay::delayShort(ticks);
+                }
+
                 this->keyboardState->keyDown(numpadKeys[1], 0);
                 this->keyboardState->sendReport();
 
-                if (numpadKeys[0])
-                    this->keyboardState->keyUp(numpadKeys[0], 1);
+                Delay::delayShort(ticks);
+
                 this->keyboardState->keyUp(numpadKeys[1], 0);
                 this->keyboardState->sendReport();
+
+                if (numpadKeys[0]) {
+                    this->keyboardState->keyUp(numpadKeys[0], 1);
+                    this->keyboardState->sendReport();
+                    Delay::delayShort(ticks);
+                }
             } else {
                 this->keyboardState->keyDown(numpadKeys[0], 1);
+                this->keyboardState->sendReport();
+
+                Delay::delayShort(ticks);
 
                 for (key = numpadKeys + 1; *key != 0 && key < key + 3; key++) {
                     this->keyboardState->keyDown(*key, 0);
                     this->keyboardState->sendReport();
 
+                    Delay::delayShort(ticks);
+
                     this->keyboardState->keyUp(*key, 0);
                     this->keyboardState->sendReport();
+
+                    Delay::delayShort(ticks);
                 }
 
                 this->keyboardState->keyUp(numpadKeys[0], 1);
                 this->keyboardState->sendReport();
             }
-
-            Delay::delayShort(ticks);
         }
     }
 
