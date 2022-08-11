@@ -79,7 +79,7 @@ namespace ps2_to_hid_transcoder
         ps2ToHidLookupMap[PS2_KEY_2] = HID_KEY_2;
         ps2ToHidLookupMap[PS2_KEY_3] = HID_KEY_3;
         ps2ToHidLookupMap[PS2_KEY_4] = HID_KEY_4;
-        ps2ToHidLookupMap[PS2_KEY_6] = HID_KEY_6;
+        ps2ToHidLookupMap[PS2_KEY_5] = HID_KEY_5;
         ps2ToHidLookupMap[PS2_KEY_6] = HID_KEY_6;
         ps2ToHidLookupMap[PS2_KEY_7] = HID_KEY_7;
         ps2ToHidLookupMap[PS2_KEY_8] = HID_KEY_8;
